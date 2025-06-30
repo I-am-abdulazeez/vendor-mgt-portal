@@ -334,3 +334,81 @@ Since field requirements vary based on vendor type and classification, here are 
 
 ## Validation Rules Summary
 The frontend already handled the complex conditional validation based on vendor type combinations. The backend should implement similar validation logic.
+
+
+## APIs
+Vendor Registration & Submission
+ 
+```POST``` /api/vendors/submit
+- Submit complete vendor registration form
+- Validate form data based on vendor type rules
+- Create new submission with "Submitted" status
+- Return submission ID and initial status 
+ 
+```GET``` /api/vendors/submissions/{id}
+- Retrieve specific submission by ID
+- Include form data, status, and review history 
+ 
+```PUT``` /api/vendors/submissions/{id}
+- Update existing submission (for resubmissions after rejection)
+- Validate updated data
+ 
+Admin Review & Workflow Management
+ 
+```GET``` /api/admin/submissions
+- List all submissions with filtering/pagination
+- Filter by status, reviewer
+- Include basic submission info and current status
+- Include all form submission by Vendor
+ 
+```POST``` /api/admin/submissions/{id}/review
+- Submit review action (approve/reject/comment)
+- Update submission status based on workflow rules
+- Add to review history
+ 
+```GET``` /api/admin/submissions/{id}/history
+- Get complete review history for a submission
+- Include all comments and status changes
+ 
+Business Central Integration
+ 
+```POST``` /api/bc/sync/{submissionId}
+- Sync approved vendor data to Business Central
+- Handle BC API integration
+- Update bcSyncStatus accordingly
+ 
+```GET``` /api/bc/status/{submissionId} (So, i can display failed in the UI)
+- Check BC sync status
+- Return sync attempts and error details
+ 
+ 
+Reference Data APIs
+```GET``` /api/countries
+- List of countries   
+```GET``` /api/states
+- List of State, based on Country selection
+```GET``` /api/banks
+- List of banks for banks
+ 
+Notifications & Communication
+ 
+```POST``` /api/notifications/send
+- Send email notifications for status changes
+- Handle submission confirmations
+- Send rejection/approval notifications
+ 
+```GET``` /api/notifications/{submissionId}
+- Get notification history for a submission
+ 
+ 
+```POST``` /api/auth/login
+- Admin login for reviewers
+- Return token with role information
+ 
+```POST``` /api/auth/signup
+- Signup new vendors
+- Return with role information
+ 
+```GET``` /api/auth/verify
+- Verify token validity
+- Return user role and permissions
